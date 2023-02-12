@@ -1,4 +1,4 @@
-import { Text, View, Image, StyleSheet, Pressable, SafeAreaView, ScrollView } from 'react-native';
+import { ScrollView, StyleSheet, SafeAreaView } from 'react-native';
 import ProductItem from './ProductItem';
 
 function Product({ navigation }) {
