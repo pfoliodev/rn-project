@@ -1,6 +1,14 @@
 import { Text, View, Image, StyleSheet, Pressable, ToastAndroid } from 'react-native';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '../redux/CartReducer';
 
-const ProductItem = (props) => {
+const ProductItem = (productItem) => {
+
+  const cart = useSelector((state) => state.cart.cart);
+  console.log(cart);
+  const dispatch = useDispatch();
+  
     const showMsgAddInShoppingCart = (label) => {
         ToastAndroid.show(label + ' : ajouté à votre panier', ToastAndroid.SHORT);
     }
@@ -8,22 +16,27 @@ const ProductItem = (props) => {
     const showMsgAddInFavorite = (label) => {
         ToastAndroid.show(label + ' : ajouté à vos favoris', ToastAndroid.SHORT);
     }
+
+    const addItemToCart = (item) => {
+      showMsgAddInShoppingCart(item.label)
+      dispatch(addToCart(item))
+    }
     return(
         <View style={styles.container}>
             <View style={styles.productImg}>
                 <Image style={styles.mainImgContent} 
-                source={{ uri: props.img }} />
+                source={{ uri: productItem.img }} />
             </View>
             <View style={styles.content}>
-                <Text style={styles.textContent}>{props.label}</Text>
-                <Text numberOfLines={4} style={styles.descriptionContent}>{props.description}</Text>
-                <Text style={styles.priceContent}>{props.price} euros</Text>
+                <Text style={styles.textContent}>{productItem.label}</Text>
+                <Text numberOfLines={4} style={styles.descriptionContent}>{productItem.description}</Text>
+                <Text style={styles.priceContent}>{productItem.price} euros</Text>
 
                 <View style={styles.buttonContent}>
-                <Pressable onPress={() => showMsgAddInShoppingCart(props.label)}>
+                <Pressable onPress={() => addItemToCart(productItem)}>
                     <Text style={styles.shoppingCartButtonContent}>PANIER</Text>
                 </Pressable>
-                <Pressable onPress={() => showMsgAddInFavorite(props.label)}>
+                <Pressable onPress={() => showMsgAddInFavorite(productItem.label)}>
                     <Image style={styles.btnImgFavoriteContent} source={require('../assets/star.png')} />
                 </Pressable>
                 </View>

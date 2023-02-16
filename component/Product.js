@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { db, collection, getDocs } from "../firebase/index"
 
 function Product({ navigation }) {
+
   const [shoppingList, setShoppingList] = useState([]);
 
   const getShoppingList = async () => {
@@ -23,25 +24,25 @@ function Product({ navigation }) {
   }, [])
 
     return (
-      <SafeAreaView style={styles.container}>
-        
+        <SafeAreaView style={styles.container}>
         {
           shoppingList.length > 0 ?
-      <FlatList
-      data={shoppingList}
-      renderItem={({item}) => (
-        <ProductItem 
-          description={item.description} 
-          img={item.img}
-          label={item.label}  
-          price={item.price} 
-        />
-      )}
-      keyExtractor={item => item.id}
-    /> : 
-    <ActivityIndicator/>
-  }
-    </SafeAreaView>
+          <FlatList
+          data={shoppingList}
+          renderItem={({item}) => (
+            <ProductItem 
+              id={item.id}
+              description={item.description} 
+              img={item.img}
+              label={item.label}  
+              price={item.price} 
+            />
+          )}
+          keyExtractor={item => item.id}
+          /> : 
+          <ActivityIndicator/>
+        }
+        </SafeAreaView>
     );
   }
 
