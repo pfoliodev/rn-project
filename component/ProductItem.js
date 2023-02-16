@@ -1,6 +1,6 @@
 import { Text, View, Image, StyleSheet, Pressable, ToastAndroid } from 'react-native';
 
-function ProductItem(){
+const ProductItem = (props) => {
     const showMsgAddInShoppingCart = () => {
         ToastAndroid.show('Article ajouté à votre panier', ToastAndroid.SHORT);
     }
@@ -12,12 +12,12 @@ function ProductItem(){
         <View style={styles.container}>
             <View style={styles.productImg}>
                 <Image style={styles.mainImgContent} 
-                source={{ uri: 'https://cdn.shopify.com/s/files/1/0507/9443/0625/products/gryffondor-5_430x600.jpg'}} />
+                source={{ uri: props.img }} />
             </View>
             <View style={styles.content}>
-                <Text style={styles.textContent}>Gryffondor</Text>
-                <Text numberOfLines={4} style={styles.descriptionContent}>Des notes rassurantes qui donnent le courage d'affronter ses ennemis</Text>
-                <Text style={styles.priceContent}>36 euros</Text>
+                <Text style={styles.textContent}>{props.label}</Text>
+                <Text numberOfLines={4} style={styles.descriptionContent}>{props.description}</Text>
+                <Text style={styles.priceContent}>{props.price}</Text>
 
                 <View style={styles.buttonContent}>
                 <Pressable onPress={() => showMsgAddInShoppingCart()}>
