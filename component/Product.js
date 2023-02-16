@@ -8,18 +8,14 @@ function Product({ navigation }) {
 
   const getShoppingList = async () => {
     const querySnapshot = await getDocs(collection(db, "Product"));
+    const shoppingListData = [];
     querySnapshot.forEach((doc) => {
-    console.log(doc.data());
-    
-    setShoppingList({
-      ...doc.data(),
-      id: doc.id,
-      img: doc.img,
-      description: doc.description,
-      label: doc.label,
-      price: doc.price
+      shoppingListData.push({
+        ...doc.data(),
+        id: doc.id,
+      });
     });
-  });
+    setShoppingList(shoppingListData);
   }
   
   useEffect(() => {
@@ -28,17 +24,24 @@ function Product({ navigation }) {
 
     return (
       <SafeAreaView style={styles.container}>
-        <FlatList
-        data={shoppingList}
-        renderItem={({item}) => 
-          <ProductItem 
+        
+        {
+          shoppingList.length > 0 ?
+      <FlatList
+      data={shoppingList}
+      renderItem={({item}) => (
+        <ProductItem 
           description={item.description} 
           img={item.img}
           label={item.label}  
-          price={item.price} />}
-          keyExtractor={item=>item.id}
-        /> 
-      </SafeAreaView>
+          price={item.price} 
+        />
+      )}
+      keyExtractor={item => item.id}
+    /> : 
+    <ActivityIndicator/>
+  }
+    </SafeAreaView>
     );
   }
 

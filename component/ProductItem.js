@@ -1,12 +1,12 @@
 import { Text, View, Image, StyleSheet, Pressable, ToastAndroid } from 'react-native';
 
 const ProductItem = (props) => {
-    const showMsgAddInShoppingCart = () => {
-        ToastAndroid.show('Article ajouté à votre panier', ToastAndroid.SHORT);
+    const showMsgAddInShoppingCart = (label) => {
+        ToastAndroid.show(label + ' : ajouté à votre panier', ToastAndroid.SHORT);
     }
 
-    const showMsgAddInFavorite = () => {
-        ToastAndroid.show('Article ajouté à vos favoris', ToastAndroid.SHORT);
+    const showMsgAddInFavorite = (label) => {
+        ToastAndroid.show(label + ' : ajouté à vos favoris', ToastAndroid.SHORT);
     }
     return(
         <View style={styles.container}>
@@ -17,13 +17,13 @@ const ProductItem = (props) => {
             <View style={styles.content}>
                 <Text style={styles.textContent}>{props.label}</Text>
                 <Text numberOfLines={4} style={styles.descriptionContent}>{props.description}</Text>
-                <Text style={styles.priceContent}>{props.price}</Text>
+                <Text style={styles.priceContent}>{props.price} euros</Text>
 
                 <View style={styles.buttonContent}>
-                <Pressable onPress={() => showMsgAddInShoppingCart()}>
+                <Pressable onPress={() => showMsgAddInShoppingCart(props.label)}>
                     <Text style={styles.shoppingCartButtonContent}>PANIER</Text>
                 </Pressable>
-                <Pressable onPress={() => showMsgAddInFavorite()}>
+                <Pressable onPress={() => showMsgAddInFavorite(props.label)}>
                     <Image style={styles.btnImgFavoriteContent} source={require('../assets/star.png')} />
                 </Pressable>
                 </View>
