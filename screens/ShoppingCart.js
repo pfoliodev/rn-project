@@ -1,7 +1,9 @@
 
-import { View, Image, Text, Pressable, StyleSheet, SafeAreaView, FlatList, ActivityIndicator, ToastAndroid } from 'react-native';
+import { View, Image, Text, Pressable, StyleSheet, Modal, FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { incrementQuantity, decrementQuantity, removeFromCart } from '../redux/CartReducer';
+import { useState } from 'react';
+import CartModal from '../component/CartModal';
 
 
 function ShoppingCart() {
@@ -26,9 +28,26 @@ function ShoppingCart() {
         
     }
 
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const toggleModal = () => {
+        setIsModalVisible(!isModalVisible);
+      }
+
+    const closeModal = () => {
+        setModalVisible(false);
+    };
+
     console.log("CartRedux : " + cart);
     return(
         <View style={styles.container}>
+            <Modal
+            visible={isModalVisible}
+            animationType="slide"
+            transparent={true}
+            onRequestClose={toggleModal}>
+            <CartModal cartData={cart} closeModal={() => setIsModalVisible(false)}></CartModal>
+        </Modal>
           {
           cart.length > 0 ?
           
@@ -66,7 +85,7 @@ function ShoppingCart() {
         {cart.length > 0 && (
             <View style={styles.separator}>
                 <View style={styles.layoutShipping}>
-                    <Pressable>
+                    <Pressable onPress={toggleModal}>
                     <Text style={styles.textShipping}>Payer</Text>
                 </Pressable>
                 </View>

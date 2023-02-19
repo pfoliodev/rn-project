@@ -1,6 +1,5 @@
 import { View, Image, Text, Pressable, StyleSheet, SafeAreaView, FlatList, ActivityIndicator, ToastAndroid } from 'react-native';
 import { useEffect, useState } from 'react';
-import { useLayoutEffect } from 'react';
 import { db, collection, getDocs } from "../firebase/index"
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, removeFromCart } from '../redux/CartReducer';
