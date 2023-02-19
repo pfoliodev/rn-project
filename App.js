@@ -1,15 +1,23 @@
-import NavigationContainer from './component/Navigator';
+import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
 import store from './store';
 import Product from './screens/Product';
+import { createStackNavigator } from '@react-navigation/stack';
+
 import { View, StyleSheet, Text } from 'react-native';
+import ShoppingCart from './screens/ShoppingCart';
 
 export default function App() {
+  const Stack = createStackNavigator();
   return (
-      <Provider store={store}>
-        <Text style={styles.mainTitle}>Zevora</Text>
-        <Product></Product>
-      </Provider>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Product" component={Product} />
+          <Stack.Screen name="ShoppingCart" component={ShoppingCart} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 };
 

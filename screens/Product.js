@@ -1,11 +1,20 @@
 import { View, Image, Text, Pressable, StyleSheet, SafeAreaView, FlatList, ActivityIndicator, ToastAndroid } from 'react-native';
 import { useEffect, useState } from 'react';
+import { useLayoutEffect } from 'react';
 import { db, collection, getDocs } from "../firebase/index"
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, removeFromCart } from '../redux/CartReducer';
-import ShoppingCart from './ShoppingCart';
+import { useNavigation } from '@react-navigation/native';
 
-function Product({ navigation }) {
+function Product() {
+
+  const navigation = useNavigation();
+
+  function handlePress() {
+    navigation.navigate('ShoppingCart', {
+      cart
+    });
+  }
 
   const cart = useSelector((state) => state.cart.cart);
   const dispatch = useDispatch();
@@ -55,7 +64,6 @@ const removeItemFromCart = (item) => {
   }, [])
 
     return (
-      
         <View style={styles.container}>
           {
           shoppingList.length > 0 ?
@@ -96,8 +104,8 @@ const removeItemFromCart = (item) => {
         }
         <View style={styles.separator}></View>
         <View style={styles.layoutShipping}>
-          <Pressable onPress={() => navigation.navigation('ShoppingCart')}>
-            <Text style={styles.textShipping}>Passez commande</Text>
+          <Pressable onPress={handlePress}>
+            <Text style={styles.textShipping}>Mon Panier</Text>
           </Pressable>
         </View>
         </View>
@@ -129,6 +137,7 @@ const removeItemFromCart = (item) => {
       bottom:0
     },
     textShipping: {
+      marginTop: 5,
       fontSize: 20,
       borderStyle: 'solid',
       borderWidth:  2,
