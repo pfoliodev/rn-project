@@ -59,9 +59,21 @@ function ShoppingCart() {
           )}
           keyExtractor={item => item.id}
           /> : 
-          <ActivityIndicator/>
+            <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+                <Text style={{fontWeight:'bold', fontSize: 15}}>Aucun article dans le panier</Text>
+            </View>
         }
+        {cart.length > 0 && (
+            <View style={styles.separator}>
+                <View style={styles.layoutShipping}>
+                    <Pressable>
+                    <Text style={styles.textShipping}>Payer</Text>
+                </Pressable>
+                </View>
+            </View>
+        )}
         </View>
+        
     )
 }
 
@@ -74,6 +86,31 @@ const styles = StyleSheet.create({
     productList:{
       flexDirection: 'row'
     },
+    separator: {
+        height:70,
+      },
+    layoutShipping:{
+        justifyContent: 'center',
+        flex: 1,
+        flexDirection:'row',
+        height: 60,
+        width: '100%',
+        backgroundColor: 'white',
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom:0
+      },
+      textShipping: {
+        marginTop: 5,
+        fontSize: 20,
+        borderStyle: 'solid',
+        borderWidth:  2,
+        backgroundColor: 'white',
+        color:'black',
+        padding: 10,
+        borderRadius: 3
+      },
     mainImgContent: {
       width: 150,
       height: 205,
