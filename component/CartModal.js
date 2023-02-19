@@ -3,7 +3,9 @@ import { StyleSheet, View, Text, Pressable, ToastAndroid } from "react-native";
 const CartModal = ({cartData, closeModal}) => {
 
     const totalQuantity = cartData.reduce((total, item) => total + item.quantity, 0);
-    const totalPrice = cartData.reduce((total, item) => total + item.price, 0)
+    const totalPrice = cartData.reduce((total, item) => {
+        return total + item.quantity * item.price;
+      }, 0);
 
     const validOrder = () => {
         ToastAndroid.show("Commande validée, merci pour votre achat", ToastAndroid.SHORT)
@@ -74,6 +76,9 @@ const styles = StyleSheet.create({
         color: 'white',
         backgroundColor: '#36F76F',
         padding: 8,
+        borderStyle: 'solid',
+        borderColor: '#36F76F',
+        borderWidth:  2,
         borderRadius: 3
     }
 });
