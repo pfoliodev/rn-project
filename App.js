@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import { View, StyleSheet, Text } from 'react-native';
 import ShoppingCart from './screens/ShoppingCart';
+import LoginScreen from './screens/Login';
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -13,6 +14,7 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator>
+        <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Product" component={Product} />
           <Stack.Screen name="ShoppingCart" component={ShoppingCart} />
         </Stack.Navigator>
