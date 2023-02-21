@@ -34,10 +34,6 @@ function ShoppingCart() {
         setIsModalVisible(!isModalVisible);
       }
 
-    const closeModal = () => {
-        setModalVisible(false);
-    };
-
     console.log("CartRedux : " + cart);
     return(
         <View style={styles.container}>
