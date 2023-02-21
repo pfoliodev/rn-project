@@ -1,9 +1,11 @@
-import { View, Image, Text, Pressable, StyleSheet, SafeAreaView, FlatList, ActivityIndicator, ToastAndroid } from 'react-native';
+import { View, Image, Text, Pressable, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, ToastAndroid } from 'react-native';
 import { useEffect, useState } from 'react';
+import React from 'react';
 import { db, collection, getDocs } from "../firebase/index"
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart, removeFromCart } from '../redux/CartReducer';
+import { addToCart, removeFromCart, resetCart } from '../redux/CartReducer';
 import { useNavigation } from '@react-navigation/native';
+import { auth } from '../firebase/index';
 
 function Product() {
 
@@ -17,6 +19,16 @@ function Product() {
 
   const cart = useSelector((state) => state.cart.cart);
   const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    auth.signOut()
+    .then(() => {
+      navigation.replace("Login")
+      ToastAndroid.show("Vous êtes à présent déconnecté", ToastAndroid.SHORT);
+      resetItemToCart();
+    })
+    .catch(error => alert(error.message))
+  }
 
   const showMsgAddInShoppingCart = (label) => {
     ToastAndroid.show(label + ' : ajouté à votre panier', ToastAndroid.SHORT);
@@ -32,6 +44,10 @@ const showMsgAddInFavorite = (label) => {
 
 const removeMsgInFavorite = (label) => {
   ToastAndroid.show(label + ' : retiré de vos favoris', ToastAndroid.SHORT);
+}
+
+const resetItemToCart = () => {
+  dispatch(resetCart());
 }
 
 const addItemToCart = (item) => {
@@ -61,6 +77,18 @@ const removeItemFromCart = (item) => {
   useEffect(() => {
     getShoppingList()
   }, [])
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+        onPress={handleLogout}
+        style={styles.button}>
+          <Text style={styles.buttonText}>Déconnexion</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
     return (
         <View style={styles.container}>
@@ -112,6 +140,19 @@ const removeItemFromCart = (item) => {
   }
 
   const styles = StyleSheet.create({
+    buttonText: {
+      color: 'white',
+      fontWeight: '700',
+      fontSize: 16,
+    },
+    button: {
+      backgroundColor: '#000',
+      width: '50%',
+      padding: 10,
+      borderRadius: 3,
+      alignItems: 'center',
+      marginEnd: 5
+    },
     container: {
       flex:1,
       flexDirection: 'column',

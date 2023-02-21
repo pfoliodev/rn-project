@@ -1,13 +1,23 @@
 import { useNavigation } from '@react-navigation/core'
 import React, { useEffect, useState } from 'react'
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native'
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   const navigation = useNavigation()
+
+  useEffect(() => {
+   const unsubscribe =  onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const uid = user.uid;
+        navigation.replace("Product")
+      } 
+    });
+    return unsubscribe;
+  }, [])
 
   const auth = getAuth();
 
@@ -24,9 +34,6 @@ const LoginScreen = () => {
         ToastAndroid.show("Le mot de passe doit contenir au moins 6 charactères", ToastAndroid.SHORT);
         return false;
     }
-
-    console.log("Email:", email);
-    console.log("Password:", password);
     
     createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
@@ -41,6 +48,18 @@ const LoginScreen = () => {
       if (errorCode === 'auth/email-already-in-use') ToastAndroid.show("Email déjà utilisé", ToastAndroid.SHORT);
       console.log("Error:", errorMessage);
       // ..
+    });
+  }
+
+  const handleLogin = () => {
+      signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      ToastAndroid.show("Vous êtes à présent connecté : " + user.email, ToastAndroid.SHORT);
+    })
+    .catch((error) => {
+      alert(error.message);
     });
   }
 
@@ -68,7 +87,7 @@ const LoginScreen = () => {
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          //onPress={handleLogin}
+          onPress={handleLogin}
           style={styles.button}
         >
           <Text style={styles.buttonText}>Login</Text>
@@ -110,7 +129,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   button: {
-    backgroundColor: '#0782F9',
+    backgroundColor: '#000',
     width: '100%',
     padding: 15,
     borderRadius: 10,
@@ -119,7 +138,7 @@ const styles = StyleSheet.create({
   buttonOutline: {
     backgroundColor: 'white',
     marginTop: 5,
-    borderColor: '#0782F9',
+    borderColor: '#000',
     borderWidth: 2,
   },
   buttonText: {
@@ -128,7 +147,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   buttonOutlineText: {
-    color: '#0782F9',
+    color: '#000',
     fontWeight: '700',
     fontSize: 16,
   },
