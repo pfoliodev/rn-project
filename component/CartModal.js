@@ -1,16 +1,35 @@
 import { StyleSheet, View, Text, Pressable, ToastAndroid } from "react-native";
+import { db, collection, addDoc } from "../firebase/index"
+import { resetCart } from '../redux/CartReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+
 
 const CartModal = ({cartData, closeModal}) => {
+
+     const navigation = useNavigation();
+
+    const cart = useSelector((state) => state.cart.cart);
+    const dispatch = useDispatch();
+
+    const orderCollection = collection(db, "Order");
 
     const totalQuantity = cartData.reduce((total, item) => total + item.quantity, 0);
     const totalPrice = cartData.reduce((total, item) => {
         return total + item.quantity * item.price;
       }, 0);
 
-    const validOrder = () => {
+      const addOrder = async () => {
+        await addDoc(orderCollection, {totalArticle: totalQuantity, totalPrice: totalPrice});
+        resetItemToCart()
         ToastAndroid.show("Commande validée, merci pour votre achat", ToastAndroid.SHORT)
         closeModal()
-    }
+        navigation.navigate('Product', {cart});
+    };
+
+    const resetItemToCart = () => {
+        dispatch(resetCart());
+      }
 
     return (
     <View style={styles.modalContainer}>
@@ -27,7 +46,7 @@ const CartModal = ({cartData, closeModal}) => {
                 <Pressable onPress={closeModal}>
                     <Text style={styles.cancel}>Annuler</Text>
                 </Pressable>
-                <Pressable onPress={validOrder}>
+                <Pressable onPress={addOrder}>
                     <Text style={styles.valid}>Valider</Text>
                 </Pressable>
             </View>
