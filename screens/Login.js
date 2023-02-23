@@ -37,17 +37,14 @@ const LoginScreen = () => {
     
     createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // Signed in 
+
       const user = userCredential.user;
-      console.log("User:", user);
-      // ...
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
       if (errorCode === 'auth/email-already-in-use') ToastAndroid.show("Email déjà utilisé", ToastAndroid.SHORT);
       console.log("Error:", errorMessage);
-      // ..
     });
   }
 
@@ -62,7 +59,6 @@ const LoginScreen = () => {
       alert(error.message);
     });
   }
-
 
   return (
     <KeyboardAvoidingView
