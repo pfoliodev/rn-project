@@ -15,8 +15,8 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
         <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Product" component={Product} />
-          <Stack.Screen name="ShoppingCart" component={ShoppingCart} />
+          <Stack.Screen name="Product" component={Product} options={{ title: 'Zevora' }}/>
+          <Stack.Screen name="ShoppingCart" component={ShoppingCart} options={{ title: 'Mon Panier' }}/>
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
